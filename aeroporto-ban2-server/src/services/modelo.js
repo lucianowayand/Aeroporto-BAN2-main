@@ -42,13 +42,6 @@ const Update = async (body, id) => {
           },
         }
       );
-    console.log(modelo);
-    console.log({
-      $set: {
-        capacidade: body.capacidade,
-        peso: body.peso,
-      },
-    });
   } catch (e) {
     throw new Error("Erro ao atualizar modelo " + e);
   }
