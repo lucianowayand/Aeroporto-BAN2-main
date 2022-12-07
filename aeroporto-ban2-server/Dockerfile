@@ -12,7 +12,5 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-#RUN npx prisma migrate dev
-
 EXPOSE 5000
 CMD [ "npm", "start" ]

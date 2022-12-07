@@ -23,6 +23,7 @@ export default function Modelos() {
 
     const GetAllModelos = async () => {
         const res = await GetAll('modelo')
+        console.log(res)
         setModelos(res.data.modelos)
     }
 
@@ -70,7 +71,7 @@ export default function Modelos() {
     }
 
     const DeleteModelos = async () => {
-        const res = await Delete('modelo', selectedModelo.codigo)
+        const res = await Delete('modelo', selectedModelo._id)
         if (res.status === 200) {
             setMessage({
                 text: "Modelo deletado com sucesso!",
@@ -99,6 +100,10 @@ export default function Modelos() {
         GetAllModelos()
     }, [])
 
+    useEffect(() => {
+        console.log(modelos)
+    }, [modelos])
+
     return (
         <div>
             <Modal modal={modal} closeModal={() => setModal(false)} updateFunction={UpdateModelo} deleteFunction={DeleteModelos}>
@@ -107,7 +112,7 @@ export default function Modelos() {
                     <input
                         className="mt0-5 modal-textfield"
                         onChange={(event) => codigoUpdate.current = event.target.value}
-                        defaultValue={(selectedModelo ? selectedModelo.codigo : "")}
+                        defaultValue={(selectedModelo ? selectedModelo._id : "")}
                     />
                 </div>
                 <div className="pt2 pr1">
@@ -163,7 +168,7 @@ export default function Modelos() {
                     <tbody>
                         {modelos.length !== 0  ? modelos.map((value, i) => (
                             <tr key={i} onClick={() => SelectModelo(value)} className="table-row pointer">
-                                <td>{value.codigo}</td>
+                                <td>{value._id}Ku</td>
                                 <td>{value.capacidade}</td>
                                 <td>{value.peso}</td>
                             </tr>
