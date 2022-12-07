@@ -168,7 +168,7 @@ export default function Modelos() {
                     <tbody>
                         {modelos.length !== 0  ? modelos.map((value, i) => (
                             <tr key={i} onClick={() => SelectModelo(value)} className="table-row pointer">
-                                <td>{value._id}Ku</td>
+                                <td>{value._id}</td>
                                 <td>{value.capacidade}</td>
                                 <td>{value.peso}</td>
                             </tr>
