@@ -1,14 +1,17 @@
-const mongo = require('./mongo')
+const mongo = require("./mongo");
 
 const GetAll = async () => {
   try {
-    const resultado = await mongo.mongo.db('aeroporto').collection('aviao').find().toArray()
-    return resultado
+    const resultado = await mongo.mongo
+      .db("aeroporto")
+      .collection("aviao")
+      .find()
+      .toArray();
+    return resultado;
   } catch (e) {
-    throw new Error("Erro ao retornar aviões" + e)
+    throw new Error("Erro ao retornar aviões" + e);
   }
-  
-}
+};
 
 // const Create = async (body) => {
 //   try {
@@ -36,7 +39,7 @@ const GetAll = async () => {
 //   try {
 //     const aviao = await prisma.$queryRaw`Update aviao set num_reg = ${parseInt(
 //       body.num_reg
-//     )}, 
+//     )},
 //     codigo_modelo = ${body.codigo_modelo}
 //     where num_reg = ${parseInt(id)}`;
 //   } catch (e) {
@@ -59,4 +62,4 @@ const GetAll = async () => {
 //   }
 // };
 
-module.exports = { GetAll, Create, Update, Delete };
+//module.exports = { GetAll, Create, Update, Delete };
