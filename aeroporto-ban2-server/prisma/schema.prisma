@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model aviao {
+  num_reg       Int     @id
+  codigo_modelo String
+  modelo        modelo  @relation(fields: [codigo_modelo], references: [codigo], map: "mecanico_cods_fkey")
+  testa         testa[]
+}
+
+model controladoraereo {
+  nro_matricula Int       @id
+  data_exame    DateTime
+  empregado     empregado @relation(fields: [nro_matricula], references: [nro_matricula], map: "controlador_matricula_fkey")
+}
+
+model empregado {
+  nro_matricula      Int                  @id
+  endereco           String
+  telefone           String
+  salario            Float
+  nro_sindicato      Int
+  tecnico            Boolean              @default(false)
+  controladoraereo   controladoraereo?
+  modelo_has_tecnico modelo_has_tecnico[]
+  testa              testa[]
+}
+
+model modelo {
+  codigo             String               @id
+  capacidade         Int
+  peso               Int
+  aviao              aviao[]
+  modelo_has_tecnico modelo_has_tecnico[]
+}
+
+model modelo_has_tecnico {
+  nro_matricula Int
+  codigo_modelo String
+  modelo        modelo    @relation(fields: [codigo_modelo], references: [codigo], map: "codigo_modelo_fkey")
+  empregado     empregado @relation(fields: [nro_matricula], references: [nro_matricula], map: "controlador_matricula_fkey")
+
+  @@id([nro_matricula, codigo_modelo])
+}
+
+model testa {
+  codigo      Int       @id
+  data        DateTime
+  tempo       String
+  pontuacao   Int
+  nro_anac    Int
+  num_reg     Int
+  nro_tecnico Int
+  teste       teste     @relation(fields: [nro_anac], references: [nro_anac], map: "numero_anac_fkey")
+  aviao       aviao     @relation(fields: [num_reg], references: [num_reg], map: "numero_aviao_fkey")
+  empregado   empregado @relation(fields: [nro_tecnico], references: [nro_matricula], map: "numero_tecnico_fkey")
+}
+
+model teste {
+  nro_anac Int     @id
+  nome     String
+  pont_max Int
+  testa    testa[]
+}
