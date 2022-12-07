@@ -57,5 +57,4 @@ const Delete = async (id) => {
   }
 };
 
-
 module.exports = { GetAll, Create, Update, Delete };
