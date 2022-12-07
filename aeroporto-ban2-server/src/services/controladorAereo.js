@@ -1,57 +1,66 @@
-// const GetAll = async () => {
-//   try {
-//     const controladoraereo =
-//       await prisma.$queryRaw`SELECT * FROM controladoraereo`;
-//     return controladoraereo;
-//   } catch (e) {
-//     throw new Error("Erro ao retornar controlador aéreo. " + e);
-//   }
-// };
+const mongo = require("./mongo");
 
-// const Create = async (body) => {
-//   try {
-//     const controladoraereo =
-//       await prisma.$queryRaw`Insert into controladoraereo values (${body.nro_matricula}, ${body.data_exame}::timestamp)`;
-//   } catch (e) {
-//     if (
-//       e instanceof Prisma.PrismaClientKnownRequestError &&
-//       e.code == "P2010" && e.meta.code == "23505"
-//     ) {
-//       // Exemplo de msg: 'db error: ERROR: Empregado não é técnico'
-//       throw new Error("Registro já existe.");
-//     }
-//     throw new Error("Erro ao registrar controlador aéreo. " + e);
-//   }
-// };
+const GetAll = async () => {
+  try {
+    const resultado = await mongo.mongo
+      .db("aeroporto")
+      .collection("controladoraereo")
+      .find()
+      .toArray();
+    return resultado;
+  } catch (e) {
+    throw new Error("Erro ao retornar controlador aéreo" + e);
+  }
+};
 
-// const Update = async (body, id) => {
-//   try {
-//     const controladoraereo =
-//       await prisma.$queryRaw`Update controladoraereo set nro_matricula = ${parseInt(
-//         body.nro_matricula
-//       )}, 
-//     data_exame = ${body.data_exame}::timestamp
-//     where nro_matricula = ${parseInt(id)}`;
-//   } catch (e) {
-//     if (
-//       e instanceof Prisma.PrismaClientKnownRequestError &&
-//       e.code == "P2010" && e.meta.code == "23505"
-//     ) {
-//       // Exemplo de msg: 'db error: ERROR: Empregado não é técnico'
-//       throw new Error("Registro já existe.");
-//     }
-//     throw new Error("Erro ao atualizar controlador aéreo. " + e);
-//   }
-// };
+const Create = async (body) => {
+  try {
+    const funcionario = await mongo.mongo
+      .db("aeroporto")
+      .collection("funcionario")
+      .findOne({ _id: body.nro_matricula });
+    if (!funcionario) {
+      throw new Error("Funcionário não existe");
+    }
+    const modelo = await mongo.mongo
+      .db("aeroporto")
+      .collection("controladoraereo")
+      .insertOne({
+        _id: body.nro_matricula,
+        data_exame: body.data_exame,
+      });
+  } catch (e) {
+    throw new Error("Erro ao registrar controlador aéreo " + e);
+  }
+};
 
-// const Delete = async (id) => {
-//   try {
-//     await prisma.$queryRaw`Delete from controladoraereo where nro_matricula = ${parseInt(
-//       id
-//     )}`;
-//   } catch (e) {
-//     throw new Error("Erro ao deletar controlador aéreo. " + e);
-//   }
-// };
+const Update = async (body, id) => {
+  try {
+    const modelo = await mongo.mongo
+      .db("aeroporto")
+      .collection("controladoraereo")
+      .updateOne(
+        { _id: id },
+        {
+          $set: {
+            data_exame: body.data_exame,
+          },
+        }
+      );
+  } catch (e) {
+    throw new Error("Erro ao atualizar controlador aéreo " + e);
+  }
+};
 
-// module.exports = { GetAll, Create, Update, Delete };
+const Delete = async (id) => {
+  try {
+    const modelo = await mongo.mongo
+      .db("aeroporto")
+      .collection("controladoraereo")
+      .deleteOne({ _id: id });
+  } catch (e) {
+    throw new Error("Erro ao deletar modelo " + e);
+  }
+};
+
+module.exports = { GetAll, Create, Update, Delete };

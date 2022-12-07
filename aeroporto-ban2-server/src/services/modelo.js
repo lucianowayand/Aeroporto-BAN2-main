@@ -24,7 +24,7 @@ const Create = async (body) => {
         peso: body.peso,
       });
   } catch (e) {
-    throw new Error("Erro ao retornar modelo " + e);
+    throw new Error("Erro ao registrar modelo " + e);
   }
 };
 
