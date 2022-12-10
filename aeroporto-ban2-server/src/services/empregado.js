@@ -18,15 +18,9 @@ const GetAllTecnicos = async () => {
       const resultado = await mongo.mongo
         .db("aeroporto")
         .collection("empregado")
-        .find()
+        .find({tecnico: true})
         .toArray();
-        const newResultado = []
-        resultado.forEach((value, index) => {
-            if (value.tecnico){
-                newResultado.push(value)
-            }
-        })
-      return newResultado;
+      return resultado;
     } catch (e) {
       throw new Error("Erro ao retornar empregados técnico" + e);
     }
