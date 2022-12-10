@@ -1,54 +1,61 @@
-// const GetAll = async () => {
-//   try {
-//     const testes = await prisma.$queryRaw`SELECT * FROM teste`;
-//     return testes;
-//   } catch (e) {
-//     throw new Error("Erro ao retornar teste. " + e);
-//   }
-// };
+const mongo = require("./mongo");
 
-// const Create = async (body) => {
-//   try {
-//     const teste =
-//       await prisma.$queryRaw`Insert into teste values (${body.nro_anac}, ${body.nome}, ${body.pont_max})`;
-//   } catch (e) {
+const GetAll = async () => {
+  try {
+    const resultado = await mongo.mongo
+      .db("aeroporto")
+      .collection("teste")
+      .find()
+      .toArray();
+    return resultado;
+  } catch (e) {
+    throw new Error("Erro ao retornar testes" + e);
+  }
+};
 
-//     if (
-//       e instanceof Prisma.PrismaClientKnownRequestError &&
-//       e.code == "P2010" && e.meta.code == "23505"
-//     ) {
-//       // Exemplo de msg: 'db error: ERROR: Empregado não é técnico'
-//       throw new Error("Registro já existe.");
-//     }
-//     throw new Error("Erro ao registrar teste. " + e);
-//   }
-// };
+const Create = async (body) => {
+  try {
+    const modelo = await mongo.mongo
+      .db("aeroporto")
+      .collection("teste")
+      .insertOne({
+        _id: body.nro_anac,
+        nome: body.nome,
+        pont_max: body.pont_max,
+      });
+  } catch (e) {
+    throw new Error("Erro ao registrar testes " + e);
+  }
+};
 
-// const Update = async (body, id) => {
-//   try {
-//     const teste = await prisma.$queryRaw`Update teste set 
-//     nro_anac = ${parseInt(body.nro_anac)}, 
-//     nome = ${body.nome}, 
-//     pont_max = ${parseInt(body.pont_max)} 
-//     where nro_anac = ${parseInt(id)}`;
-//   } catch (e) {
-//     if (
-//       e instanceof Prisma.PrismaClientKnownRequestError &&
-//       e.code == "P2010" && e.meta.code == "23505"
-//     ) {
-//       // Exemplo de msg: 'db error: ERROR: Empregado não é técnico'
-//       throw new Error("Registro já existe.");
-//     }
-//     throw new Error("Erro ao atualizar teste. " + e);
-//   }
-// };
+const Update = async (body, id) => {
+  try {
+    const modelo = await mongo.mongo
+      .db("aeroporto")
+      .collection("teste")
+      .updateOne(
+        { _id: id },
+        {
+          $set: {
+            nome: body.nome,
+            pont_max: body.pont_max,
+          },
+        }
+      );
+  } catch (e) {
+    throw new Error("Erro ao atualizar testes " + e);
+  }
+};
 
-// const Delete = async (id) => {
-//   try {
-//     await prisma.$queryRaw`Delete from teste where nro_anac = ${parseInt(id)}`;
-//   } catch (e) {
-//     throw new Error("Erro ao deletar teste. " + e);
-//   }
-// };
+const Delete = async (id) => {
+  try {
+    const modelo = await mongo.mongo
+      .db("aeroporto")
+      .collection("teste")
+      .deleteOne({ _id: id });
+  } catch (e) {
+    throw new Error("Erro ao deletar testes " + e);
+  }
+};
 
-// module.exports = { GetAll, Create, Update, Delete };
+module.exports = { GetAll, Create, Update, Delete };

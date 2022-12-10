@@ -47,12 +47,12 @@ export default function Testes() {
 
   const UpdateTestes = async () => {
     let payload = {
+      _id: nro_anacUpdate.current,
       nome: nomeUpdate.current,
-      nro_anac: nro_anacUpdate.current,
       pont_max: pont_maxUpdate.current,
     };
     console.log(payload);
-    const res = await Update("teste", selectedTeste.nro_anac, payload);
+    const res = await Update("teste", selectedTeste._id, payload);
     if (res.status === 200) {
       setMessage({
         text: "Teste atualizado com sucesso!",
@@ -70,7 +70,7 @@ export default function Testes() {
   };
 
   const DeleteTestes = async () => {
-    const res = await Delete("teste", selectedTeste.nro_anac);
+    const res = await Delete("teste", selectedTeste._id);
     if (res.status === 200) {
       setMessage({
         text: "Teste deletado com sucesso!",
@@ -89,7 +89,7 @@ export default function Testes() {
 
   const SelectTeste = (value) => {
     setSelectedTeste(value);
-    nro_anacUpdate.current = value.nro_anac;
+    nro_anacUpdate.current = value._id;
     nomeUpdate.current = value.nome;
     pont_maxUpdate.current = value.pont_max;
     setModal(true);
@@ -111,7 +111,7 @@ export default function Testes() {
           <h5>Número Anac</h5>
           <input
             className="mt0-5 modal-textfield disabled-field"
-            defaultValue={selectedTeste ? selectedTeste.nro_anac : 0}
+            defaultValue={selectedTeste ? selectedTeste._id : 0}
             disabled
           />
         </div>
@@ -188,7 +188,7 @@ export default function Testes() {
                   onClick={() => SelectTeste(value)}
                   className="table-row pointer"
                 >
-                  <td>{value.nro_anac}</td>
+                  <td>{value._id}</td>
                   <td>{value.nome}</td>
                   <td>{value.pont_max}</td>
                 </tr>
