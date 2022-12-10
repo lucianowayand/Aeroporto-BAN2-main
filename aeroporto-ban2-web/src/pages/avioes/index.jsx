@@ -25,7 +25,7 @@ export default function Avioes() {
 
   const CreateAvioes = async () => {
     let payload = {
-      num_reg: num_regCreate.current,
+      num_reg: num_regCreate.current.toString(),
       codigo_modelo: codigo_modeloCreate.current,
     }
     const res = await Create("aviao", payload);
@@ -46,10 +46,10 @@ export default function Avioes() {
 
   const UpdateAvioes = async () => {
     let payload = {
-      num_reg: num_regUpdate.current,
+      num_reg: num_regUpdate.current.toString(),
       codigo_modelo: selectedAviao.codigo_modelo,
     };
-    const res = await Update("aviao", selectedAviao.num_reg, payload);
+    const res = await Update("aviao", selectedAviao._id, payload);
     if (res.status === 200) {
       setMessage({
         text: "Avião atualizado com sucesso!",
@@ -67,7 +67,7 @@ export default function Avioes() {
   };
 
   const DeleteAvioes = async () => {
-    const res = await Delete("aviao", selectedAviao.num_reg);
+    const res = await Delete("aviao", selectedAviao._id);
     if (res.status === 200) {
       setMessage({
         text: "Avião deletado com sucesso!",
@@ -113,9 +113,10 @@ export default function Avioes() {
         <div className="pt2 pr1">
           <h5>Número de Registro</h5>
           <input
-            className="mt0-5 modal-textfield"
+            className="mt0-5 modal-textfield disabled-field"
+            disabled
             onChange={(event) =>
-              (num_regUpdate.current = parseInt(event.target.value))
+              (num_regUpdate.current = event.target.value)
             }
             defaultValue={selectedAviao ? selectedAviao._id : ""}
           />
@@ -140,7 +141,7 @@ export default function Avioes() {
               <input
                 className="mt0-5 new-textfield"
                 onChange={(event) =>
-                  (num_regCreate.current = parseInt(event.target.value))
+                  (num_regCreate.current = event.target.value)
                 }
               />
             </div>

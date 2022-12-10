@@ -10,10 +10,10 @@ export default function Controlador() {
         error: false,
     });
 
-    const nro_matriculaCreate = useRef(0);
+    const nro_matriculaCreate = useRef("");
     const data_exameCreate = useRef("");
 
-    const nro_matriculaUpdate = useRef(0);
+    const nro_matriculaUpdate = useRef("");
     const data_exameUpdate = useRef("");
 
     const [modal, setModal] = useState(false);
@@ -29,6 +29,10 @@ export default function Controlador() {
             nro_matricula: nro_matriculaCreate.current,
             data_exame: data_exameCreate.current,
         });
+        console.log({
+            nro_matricula: nro_matriculaCreate.current,
+            data_exame: data_exameCreate.current,
+        })
         if (res.status === 200) {
             setMessage({
                 text: "Controlador cadastrado com sucesso!",
@@ -90,7 +94,7 @@ export default function Controlador() {
 
     const SelectControlador = (value) => {
         setSelectedControlador(value);
-        nro_matriculaUpdate.current = value.codigo;
+        nro_matriculaUpdate.current = value._id;
         data_exameUpdate.current = value.capacidade;
         setModal(true);
     };
@@ -99,7 +103,7 @@ export default function Controlador() {
     const GetAllEmpregados = async () => {
         const res = await GetAll('empregado')
         setMatriculas(res.data.empregados)
-        nro_matriculaCreate.current = res.data.empregados[0].nro_matricula
+        nro_matriculaCreate.current = res.data.empregados[0]._id
     }
     
     useEffect(() => {
@@ -120,7 +124,7 @@ export default function Controlador() {
                     <input
                         className="mt0-5 modal-textfield disabled-field"
                         defaultValue={
-                            selectedControlador ? selectedControlador.nro_matricula : 0
+                            selectedControlador ? selectedControlador._id : 0
                         }
                         disabled
                     />
@@ -152,15 +156,15 @@ export default function Controlador() {
                                 <select
                                     className="mt0-5 new-textfield"
                                     onChange={(event) =>
-                                        (nro_matriculaCreate.current = parseInt(event.target.value))
+                                        (nro_matriculaCreate.current = event.target.value)
                                     }
                                 >
                                     <option key={0} value={0}>
                                         {"Selecione .."}
                                     </option>
                                     {matriculas.map((element, i) => (
-                                        <option key={i + 1} value={parseInt(element.nro_matricula)}>
-                                            {element.nro_matricula}
+                                        <option key={i + 1} value={element._id}>
+                                            {element._id}
                                         </option>
                                     ))}
                                 </select>
@@ -206,7 +210,7 @@ export default function Controlador() {
                                     onClick={() => SelectControlador(value)}
                                     className="table-row pointer"
                                 >
-                                    <td>{value.nro_matricula}</td>
+                                    <td>{value._id}</td>
                                     <td>
                                         {value.data_exame.slice(5, 7) +
                                             "-" +

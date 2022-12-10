@@ -10,7 +10,7 @@ export default function Empregados() {
         error: false,
     })
 
-    const nro_matriculaCreate = useRef(0)
+    const nro_matriculaCreate = useRef("")
     const enderecoCreate = useRef("")
     const telefoneCreate = useRef("")
     const salarioCreate = useRef(0)
@@ -186,7 +186,7 @@ export default function Empregados() {
                     <div className="flex-row">
                         <div className="">
                             <h5>Matrícula</h5>
-                            <input className="mt0-5 new-textfield register-field" onChange={(event) => nro_matriculaCreate.current = parseInt(event.target.value)} />
+                            <input className="mt0-5 new-textfield register-field" onChange={(event) => nro_matriculaCreate.current = event.target.value} />
                         </div>
                         <div className="ml1">
                             <h5>Endereço</h5>
