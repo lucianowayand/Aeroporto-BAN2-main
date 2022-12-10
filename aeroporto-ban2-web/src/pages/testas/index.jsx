@@ -18,7 +18,7 @@ export default function Testas() {
   const num_regCreate = useRef(0);
   const nro_tecnicoCreate = useRef(0);
 
-  const codigoUpdate = useRef(0);
+  const codigoUpdate = useRef("");
   const dataUpdate = useRef("");
   const tempoUpdate = useRef("");
   const pontuacaoUpdate = useRef(0);
@@ -90,7 +90,7 @@ export default function Testas() {
       nro_tecnico: nro_tecnicoUpdate.current,
     };
     console.log(payload);
-    const res = await Update("testa", selectedTesta.codigo, payload);
+    const res = await Update("testa", selectedTesta._id, payload);
     if (res.status === 200) {
       setMessage({
         text: res.data.message,
@@ -108,7 +108,7 @@ export default function Testas() {
   };
 
   const DeleteTestas = async () => {
-    const res = await Delete("testa", selectedTesta.codigo);
+    const res = await Delete("testa", selectedTesta._id);
     if (res.status === 200) {
       setMessage({
         text: res.data.message,
@@ -127,7 +127,7 @@ export default function Testas() {
 
   const SelectTesta = (value) => {
     setSelectedTesta(value);
-    codigoUpdate.current = value.codigo;
+    codigoUpdate.current = value._id;
     dataUpdate.current = value.data;
     tempoUpdate.current = value.tempo;
     pontuacaoUpdate.current = value.pontuacao;
@@ -158,9 +158,9 @@ export default function Testas() {
               <h5>Código</h5>
               <input
                 className="mt0-5 modal-textfield"
-                defaultValue={selectedTesta ? selectedTesta.codigo : ""}
+                defaultValue={selectedTesta ? selectedTesta._id : ""}
                 onChange={(event) =>
-                  (codigoUpdate.current = parseInt(event.target.value))
+                  (codigoUpdate.current = event.target.value)
                 }
               />
             </div>
@@ -180,7 +180,7 @@ export default function Testas() {
                 className="mt0-5 modal-textfield"
                 defaultValue={selectedTesta ? selectedTesta.nro_anac : ""}
                 onChange={(event) =>
-                  (nro_anacUpdate.current = parseInt(event.target.value))
+                  (nro_anacUpdate.current = event.target.value)
                 }
               />
             </div>
@@ -206,7 +206,7 @@ export default function Testas() {
                 className="mt0-5 modal-textfield"
                 defaultValue={selectedTesta ? selectedTesta.pontuacao : ""}
                 onChange={(event) =>
-                  (pontuacaoUpdate.current = parseInt(event.target.value))
+                  (pontuacaoUpdate.current = event.target.value)
                 }
               />
             </div>
@@ -216,7 +216,7 @@ export default function Testas() {
                 className="mt0-5 modal-textfield disabled-field"
                 defaultValue={selectedTesta ? selectedTesta.nro_tecnico : ""}
                 onChange={(event) =>
-                  (pontuacaoUpdate.current = parseInt(event.target.value))
+                  (pontuacaoUpdate.current = event.target.value)
                 }
                 disabled
               />
@@ -235,7 +235,7 @@ export default function Testas() {
               <input
                 className="mt0-5 new-textfield register-field"
                 onChange={(event) =>
-                  (codigoCreate.current = parseInt(event.target.value))
+                  (codigoCreate.current = event.target.value)
                 }
               />
             </div>
@@ -269,15 +269,15 @@ export default function Testas() {
                 <select
                   className="mt0-5 new-textfield"
                   onChange={(event) =>
-                    (nro_anacCreate.current = parseInt(event.target.value))
+                    (nro_anacCreate.current = event.target.value)
                   }
                 >
                   <option key={0} value={0}>
                     {"Selecione .."}
                   </option>
                   {testes.map((element, i) => (
-                    <option key={i + 1} value={parseInt(element.nro_anac)}>
-                      {element.nro_anac}
+                    <option key={i + 1} value={element._id}>
+                      {element._id}
                     </option>
                   ))}
                 </select>
@@ -286,7 +286,7 @@ export default function Testas() {
                   className="mt0-5 new-textfield  disabled-field"
                   disabled
                   onChange={(event) =>
-                    (nro_anacCreate.current = parseInt(event.target.value))
+                    (nro_anacCreate.current = event.target.value)
                   }
                 />
               )}
@@ -296,17 +296,17 @@ export default function Testas() {
               {avioes.length !== 0 ? (
                 <select
                   className="mt0-5 new-textfield"
-                  defaultValue={selectedTesta ? selectedTesta.num_reg : 0}
+                  defaultValue={selectedTesta ? selectedTesta._id : 0}
                   onChange={(event) =>
-                    (num_regCreate.current = parseInt(event.target.value))
+                    (num_regCreate.current = event.target.value)
                   }
                 >
                   <option key={0} value={0}>
                     {"Selecione .."}
                   </option>
                   {avioes.map((element, i) => (
-                    <option key={i + 1} value={parseInt(element.num_reg)}>
-                      {element.num_reg}
+                    <option key={i + 1} value={element._id}>
+                      {element._id}
                     </option>
                   ))}
                 </select>
@@ -315,7 +315,7 @@ export default function Testas() {
                   className="mt0-5 new-textfield  disabled-field"
                   disabled
                   onChange={(event) =>
-                    (num_regCreate.current = parseInt(event.target.value))
+                    (num_regCreate.current = event.target.value)
                   }
                 />
               )}
@@ -325,17 +325,17 @@ export default function Testas() {
               {tecnicos.length !== 0 ? (
                 <select
                   className="mt0-5 new-textfield"
-                  defaultValue={selectedTesta ? selectedTesta.nro_tecnico : 0}
+                  defaultValue={selectedTesta ? selectedTesta._id : 0}
                   onChange={(event) =>
-                    (nro_tecnicoCreate.current = parseInt(event.target.value))
+                    (nro_tecnicoCreate.current = event.target.value)
                   }
                 >
                   <option key={0} value={0}>
                     {"Selecione .."}
                   </option>
                   {tecnicos.map((element, i) => (
-                    <option key={i + 1} value={parseInt(element.nro_matricula)}>
-                      {element.nro_matricula}
+                    <option key={i + 1} value={element._id}>
+                      {element._id}
                     </option>
                   ))}
                 </select>
@@ -344,7 +344,7 @@ export default function Testas() {
                   className="mt0-5 new-textfield  disabled-field"
                   disabled
                   onChange={(event) =>
-                    (nro_tecnicoCreate.current = parseInt(event.target.value))
+                    (nro_tecnicoCreate.current = event.target.value)
                   }
                 />
               )}
@@ -376,7 +376,7 @@ export default function Testas() {
                   onClick={() => SelectTesta(value)}
                   className="table-row pointer"
                 >
-                  <td>{value.codigo}</td>
+                  <td>{value._id}</td>
                   <td>
                     {value.data.slice(5, 7) +
                       "-" +
