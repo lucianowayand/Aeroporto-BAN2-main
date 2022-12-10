@@ -117,7 +117,7 @@ export default function Avioes() {
             onChange={(event) =>
               (num_regUpdate.current = parseInt(event.target.value))
             }
-            defaultValue={selectedAviao ? selectedAviao.num_reg : ""}
+            defaultValue={selectedAviao ? selectedAviao._id : ""}
           />
         </div>
         <div className="pt2 pr1">
@@ -157,8 +157,8 @@ export default function Avioes() {
                     {"Selecione .."}
                   </option>
                   {modelos.map((element, i) => (
-                    <option key={i} value={element.codigo}>
-                      {element.codigo}
+                    <option key={i} value={element._id}>
+                      {element._id}
                     </option>
                   ))}
                 </select>
@@ -191,7 +191,7 @@ export default function Avioes() {
                   onClick={() => SelectAviao(value)}
                   className="table-row pointer"
                 >
-                  <td>{value.num_reg}</td>
+                  <td>{value._id}</td>
                   <td>{value.codigo_modelo}</td>
                 </tr>
               ))
