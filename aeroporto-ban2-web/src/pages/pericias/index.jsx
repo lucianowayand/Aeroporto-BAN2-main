@@ -22,12 +22,15 @@ export default function Pericia() {
   const GetAllEmpregados = async () => {
     const res = await GetAll("empregado");
     setMatriculas(res.data.empregados);
+    console.log(res)
   };
 
   const [modelos, setModelos] = useState([]);
   const GetAllModelos = async () => {
     const res = await GetAll("modelo");
     setModelos(res.data.modelos);
+    console.log(res)
+
   };
 
   const GetAllPericia = async () => {
@@ -58,31 +61,8 @@ export default function Pericia() {
     }
   };
 
-  const UpdatePericia = async () => {
-    let payload = {
-      nro_matricula: nro_matriculaUpdate.current,
-      codigo_modelo: codigo_modeloUpdate.current,
-    };
-    console.log(payload);
-    const res = await Update("pericia", selectedPericia.nro_matricula, payload);
-    if (res.status === 200) {
-      setMessage({
-        text: "Pericia atualizada com sucesso!",
-        error: false,
-      });
-      GetAllPericia();
-    } else {
-      console.log(res);
-      setMessage({
-        text: res.data.message,
-        error: true,
-      });
-    }
-    setModal(false);
-  };
-
   const DeletePericia = async () => {
-    const res = await Delete("pericia", selectedPericia.nro_matricula);
+    const res = await Delete("pericia", selectedPericia.nro_matricula+selectedPericia.codigo_modelo);
     if (res.status === 200) {
       setMessage({
         text: "Pericia deletada com sucesso!",
@@ -117,7 +97,7 @@ export default function Pericia() {
       <Modal
         modal={modal}
         closeModal={() => setModal(false)}
-        updateFunction={UpdatePericia}
+        updateFunction={() => {setModal(false)}}
         deleteFunction={DeletePericia}
       >
         <div className="pt2 pr1">
@@ -130,31 +110,11 @@ export default function Pericia() {
         </div>
         <div className="pt2 pr1">
           <h5>Código do Modelo</h5>
-          {modelos.length !== 0 ? (
-            <select
-              className="mt0-5 new-textfield"
-              defaultValue={
-                selectedPericia ? selectedPericia.codigo_modelo : ""
-              }
-              onChange={(event) =>
-                (codigo_modeloUpdate.current = event.target.value)
-              }
-            >
-              {modelos.map((element, i) => (
-                <option key={i} value={element.codigo}>
-                  {element.codigo}
-                </option>
-              ))}
-            </select>
-          ) : (
-            <input
-              className="mt0-5 new-textfield  disabled-field"
-              disabled
-              onChange={(event) =>
-                (data_exameUpdate.current = event.target.value)
-              }
-            />
-          )}
+          <input
+            className="mt0-5 modal-textfield disabled-field"
+            defaultValue={selectedPericia ? selectedPericia.codigo_modelo : 0}
+            disabled
+          />
         </div>
       </Modal>
       <h1>Perícia</h1>
@@ -169,15 +129,15 @@ export default function Pericia() {
                 <select
                   className="mt0-5 new-textfield"
                   onChange={(event) =>
-                    (nro_matriculaCreate.current = parseInt(event.target.value))
+                    (nro_matriculaCreate.current = event.target.value)
                   }
                 >
                   <option key={0} value={0}>
                     {"Selecione .."}
                   </option>
                   {matriculas.map((element, i) => (
-                    <option key={i + 1} value={parseInt(element.nro_matricula)}>
-                      {element.nro_matricula}
+                    <option key={i + 1} value={element._id}>
+                      {element._id}
                     </option>
                   ))}
                 </select>
@@ -204,8 +164,8 @@ export default function Pericia() {
                     {"Selecione .."}
                   </option>
                   {modelos.map((element, i) => (
-                    <option key={i + 1} value={element.codigo}>
-                      {element.codigo}
+                    <option key={i + 1} value={element._id}>
+                      {element._id}
                     </option>
                   ))}
                 </select>
