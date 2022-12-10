@@ -35,7 +35,7 @@ export default function Empregados() {
 
     const CreateEmpregados = async () => {
         const payload = {
-            _id: nro_matriculaCreate.current.toString(),
+            nro_matricula: nro_matriculaCreate.current.toString(),
             endereco: enderecoCreate.current,
             telefone: telefoneCreate.current,
             salario: salarioCreate.current,
@@ -60,7 +60,7 @@ export default function Empregados() {
 
     const UpdateEmpregados = async () => {
         let payload = {
-            _id: nro_matriculaUpdate.current.toString(),
+            nro_matricula: nro_matriculaUpdate.current.toString(),
             endereco: enderecoUpdate.current,
             telefone: telefoneUpdate.current,
             salario: salarioUpdate.current,
@@ -68,7 +68,7 @@ export default function Empregados() {
             tecnico: tecnicoUpdate
         }
         console.log(payload)
-        const res = await Update('empregado', selectedEmpregado._id, payload)
+        const res = await Update('empregado', selectedEmpregado.nro_matricula, payload)
         if (res.status === 200) {
             setMessage({
                 text: "Empregado atualizado com sucesso!",
@@ -86,7 +86,7 @@ export default function Empregados() {
     }
 
     const DeleteEmpregados = async () => {
-        const res = await Delete('empregado', selectedEmpregado._id)
+        const res = await Delete('empregado', selectedEmpregado.nro_matricula)
         if (res.status === 200) {
             setMessage({
                 text: "Empregado deletado com sucesso!",
