@@ -49,11 +49,11 @@ export default function Modelos() {
 
     const UpdateModelo = async () => {
         let payload = {
-            codigo: codigoUpdate.current,
-            capacidade: capacidadeUpdate.current,
-            peso: pesoUpdate.current
+            capacidade: parseInt(capacidadeUpdate.current),
+            peso: parseInt(pesoUpdate.current)
         }
-        const res = await Update('modelo', selectedModelo.codigo, payload)
+
+        const res = await Update('modelo', selectedModelo._id, payload)
         if (res.status === 200) {
             setMessage({
                 text: "Modelo atualizado com sucesso!",
