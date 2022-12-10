@@ -68,7 +68,7 @@ export default function Empregados() {
             tecnico: tecnicoUpdate
         }
         console.log(payload)
-        const res = await Update('empregado', selectedEmpregado.nro_matricula, payload)
+        const res = await Update('empregado', selectedEmpregado._id, payload)
         if (res.status === 200) {
             setMessage({
                 text: "Empregado atualizado com sucesso!",
@@ -86,7 +86,7 @@ export default function Empregados() {
     }
 
     const DeleteEmpregados = async () => {
-        const res = await Delete('empregado', selectedEmpregado.nro_matricula)
+        const res = await Delete('empregado', selectedEmpregado._id)
         if (res.status === 200) {
             setMessage({
                 text: "Empregado deletado com sucesso!",
@@ -126,7 +126,8 @@ export default function Empregados() {
                         <div className="pt2 pr1">
                             <h5>Matrícula</h5>
                             <input
-                                className="mt0-5 modal-textfield"
+                                disabled
+                                className="mt0-5 modal-textfield disabled-field"
                                 defaultValue={(selectedEmpregado ? selectedEmpregado._id : "")}
                                 onChange={(event) => nro_matriculaUpdate.current = parseInt(event.target.value)}
                             />

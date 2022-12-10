@@ -145,7 +145,7 @@ export default function Testes() {
               <input
                 className="mt0-5 new-textfield"
                 onChange={(event) =>
-                  (nro_anacCreate.current = parseInt(event.target.value))
+                  (nro_anacCreate.current = event.target.value)
                 }
               />
             </div>

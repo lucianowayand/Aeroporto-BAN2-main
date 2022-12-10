@@ -157,8 +157,9 @@ export default function Testas() {
             <div className="pt2 pr1">
               <h5>Código</h5>
               <input
-                className="mt0-5 modal-textfield"
+                className="mt0-5 modal-textfield disabled-field"
                 defaultValue={selectedTesta ? selectedTesta._id : ""}
+                disabled
                 onChange={(event) =>
                   (codigoUpdate.current = event.target.value)
                 }
@@ -177,8 +178,9 @@ export default function Testas() {
             <div className="pt2 pr1">
               <h5>Nr. Anac</h5>
               <input
-                className="mt0-5 modal-textfield"
+                className="mt0-5 modal-textfield disabled-field"
                 defaultValue={selectedTesta ? selectedTesta.nro_anac : ""}
+                disabled
                 onChange={(event) =>
                   (nro_anacUpdate.current = event.target.value)
                 }

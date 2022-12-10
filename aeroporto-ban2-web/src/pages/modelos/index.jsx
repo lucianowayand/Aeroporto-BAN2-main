@@ -110,7 +110,8 @@ export default function Modelos() {
                 <div className="pt2 pr1">
                     <h5>Código</h5>
                     <input
-                        className="mt0-5 modal-textfield"
+                        className="mt0-5 modal-textfield disabled-field"
+                        disabled
                         onChange={(event) => codigoUpdate.current = event.target.value}
                         defaultValue={(selectedModelo ? selectedModelo._id : "")}
                     />
