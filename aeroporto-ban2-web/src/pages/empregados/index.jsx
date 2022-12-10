@@ -35,7 +35,7 @@ export default function Empregados() {
 
     const CreateEmpregados = async () => {
         const payload = {
-            nro_matricula: nro_matriculaCreate.current,
+            _id: nro_matriculaCreate.current.toString(),
             endereco: enderecoCreate.current,
             telefone: telefoneCreate.current,
             salario: salarioCreate.current,
@@ -60,7 +60,7 @@ export default function Empregados() {
 
     const UpdateEmpregados = async () => {
         let payload = {
-            nro_matricula: nro_matriculaUpdate.current,
+            _id: nro_matriculaUpdate.current.toString(),
             endereco: enderecoUpdate.current,
             telefone: telefoneUpdate.current,
             salario: salarioUpdate.current,
@@ -68,7 +68,7 @@ export default function Empregados() {
             tecnico: tecnicoUpdate
         }
         console.log(payload)
-        const res = await Update('empregado', selectedEmpregado.nro_matricula, payload)
+        const res = await Update('empregado', selectedEmpregado._id, payload)
         if (res.status === 200) {
             setMessage({
                 text: "Empregado atualizado com sucesso!",
@@ -86,7 +86,7 @@ export default function Empregados() {
     }
 
     const DeleteEmpregados = async () => {
-        const res = await Delete('empregado', selectedEmpregado.nro_matricula)
+        const res = await Delete('empregado', selectedEmpregado._id)
         if (res.status === 200) {
             setMessage({
                 text: "Empregado deletado com sucesso!",
@@ -105,7 +105,7 @@ export default function Empregados() {
 
     const SelectEmpregado = (value) => {
         setSelectedEmpregado(value)
-        nro_matriculaUpdate.current = value.nro_matricula
+        nro_matriculaUpdate.current = value._id
         enderecoUpdate.current = value.endereco
         telefoneUpdate.current = value.telefone
         salarioUpdate.current = value.salario
@@ -127,7 +127,7 @@ export default function Empregados() {
                             <h5>Matrícula</h5>
                             <input
                                 className="mt0-5 modal-textfield"
-                                defaultValue={(selectedEmpregado ? selectedEmpregado.nro_matricula : "")}
+                                defaultValue={(selectedEmpregado ? selectedEmpregado._id : "")}
                                 onChange={(event) => nro_matriculaUpdate.current = parseInt(event.target.value)}
                             />
                         </div>
@@ -229,7 +229,7 @@ export default function Empregados() {
                     <tbody>
                         {empregados.length !== 0 ? empregados.map((value, i) => (
                             <tr key={i} onClick={() => SelectEmpregado(value)} className="table-row pointer">
-                                <td>{value.nro_matricula}</td>
+                                <td>{value._id}</td>
                                 <td>{value.endereco}</td>
                                 <td>{value.telefone}</td>
                                 <td>{value.salario}</td>
