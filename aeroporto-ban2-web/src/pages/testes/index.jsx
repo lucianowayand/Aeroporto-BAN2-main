@@ -28,7 +28,7 @@ export default function Testes() {
   const CreateTeste = async () => {
     const res = await Create("teste", {
       nome: nomeCreate.current,
-      nro_anac: nro_anacCreate.current,
+      nro_anac: nro_anacCreate.current.toString(),
       pont_max: pont_maxCreate.current,
     });
     if (res.status === 200) {
@@ -47,7 +47,7 @@ export default function Testes() {
 
   const UpdateTestes = async () => {
     let payload = {
-      _id: nro_anacUpdate.current,
+      _id: nro_anacUpdate.current.toString(),
       nome: nomeUpdate.current,
       pont_max: pont_maxUpdate.current,
     };
