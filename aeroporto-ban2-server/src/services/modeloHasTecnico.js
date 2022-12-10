@@ -1,68 +1,56 @@
-// const GetAll = async () => {
-//   try {
-//     const modelo = await prisma.$queryRaw`SELECT * FROM modelo_has_tecnico`;
-//     return modelo;
-//   } catch (e) {
-//     throw new Error("Erro ao retornar perícias . " + e);
-//   }
-// };
+const mongo = require("./mongo");
 
-// const Create = async (body) => {
-//   try {
-//     const modelo =
-//       await prisma.$queryRaw`Insert into modelo_has_tecnico values (${body.nro_matricula}, ${body.codigo_modelo})`;
-//   } catch (e) {
-//     if (
-//       e instanceof Prisma.PrismaClientKnownRequestError &&
-//       e.code == "P2010" && e.meta.code == "P0001"
-//     ) {
-//       // Exemplo de msg: 'db error: ERROR: Empregado não é técnico'
-//       throw new Error(e.meta.message.split(": ")[2]);
-//     }
-//     if (
-//       e instanceof Prisma.PrismaClientKnownRequestError &&
-//       e.code == "P2010" && e.meta.code == "23505"
-//     ) {
-//       // Exemplo de msg: 'db error: ERROR: Empregado não é técnico'
-//       throw new Error("Registro já existe.");
-//     }
-//     throw new Error("Erro ao registrar perícia. " + e);
-//   }
-// };
+const GetAll = async () => {
+  try {
+    const resultado = await mongo.mongo
+      .db("aeroporto")
+      .collection("pericia")
+      .find()
+      .toArray();
+    return resultado;
+  } catch (e) {
+    throw new Error("Erro ao retornar pericias" + e);
+  }
+};
 
-// const Update = async (body, id) => {
-//   try {
-//     const modelo = await prisma.$queryRaw`Update modelo_has_tecnico set 
-//     nro_matricula = ${parseInt(body.nro_matricula)}, 
-//     codigo_modelo = ${body.codigo_modelo}
-//     where nro_matricula = ${parseInt(id)}`;
-//   } catch (e) {
-//     if (
-//       e instanceof Prisma.PrismaClientKnownRequestError &&
-//       e.code == "P2010" && e.meta.code == "P0001"
-//     ) {
-//       // Exemplo de msg: 'db error: ERROR: Empregado não é técnico'
-//       throw new Error(e.meta.message.split(": ")[2]);
-//     }
-//     if (
-//       e instanceof Prisma.PrismaClientKnownRequestError &&
-//       e.code == "P2010" && e.meta.code == "23505"
-//     ) {
-//       // Exemplo de msg: 'db error: ERROR: Empregado não é técnico'
-//       throw new Error("Registro já existe.");
-//     }
-//     throw new Error("Erro ao atualizar perícia. " + e);
-//   }
-// };
+const Create = async (body) => {
+  try {
+    const empregado = await mongo.mongo
+      .db("aeroporto")
+      .collection("empregado")
+      .findOne({ _id: body.nro_matricula });
+    if (!empregado) {
+      throw new Error("Empregado não existe");
+    }
+    const modelo = await mongo.mongo
+      .db("aeroporto")
+      .collection("modelo")
+      .findOne({ _id: body.codigo_modelo });
+    if (!modelo) {
+      throw new Error("Modelo não existe");
+    }
+    const pericia = await mongo.mongo
+      .db("aeroporto")
+      .collection("pericia")
+      .insertOne({
+        _id:body.nro_matricula+body.codigo_modelo,
+        nro_matricula: body.nro_matricula,
+        codigo_modelo: body.codigo_modelo,
+      });
+  } catch (e) {
+    throw new Error("Erro ao registrar pericia " + e);
+  }
+};
 
-// const Delete = async (id) => {
-//   try {
-//     await prisma.$queryRaw`Delete from modelo_has_tecnico where nro_matricula = ${parseInt(
-//       id
-//     )}`;
-//   } catch (e) {
-//     throw new Error("Erro ao deletar perícia. " + e);
-//   }
-// };
+const Delete = async (id) => {
+  try {
+    const modelo = await mongo.mongo
+      .db("aeroporto")
+      .collection("pericia")
+      .deleteOne({ _id: id });
+  } catch (e) {
+    throw new Error("Erro ao deletar pericia " + e);
+  }
+};
 
-// module.exports = { GetAll, Create, Update, Delete };
+module.exports = { GetAll, Create, Delete };

@@ -31,19 +31,6 @@ const register = async (req, res, next) => {
   }
 };
 
-const update = async (req, res, next) => {
-  try {
-    await Update(req.body, req.params.id);
-    res.status(200).json({
-      message: "Perícia atualizada com sucesso",
-    });
-  } catch (e) {
-    res.status(500).json({
-      message: e.message,
-    });
-  }
-};
-
 const del = async (req, res, next) => {
   try {
     await Delete(req.params.id);
@@ -57,4 +44,4 @@ const del = async (req, res, next) => {
   }
 };
 
-module.exports = { getAll, register, update, del };
+module.exports = { getAll, register, del };
