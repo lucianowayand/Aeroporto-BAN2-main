@@ -17,7 +17,7 @@ const Create = async (body) => {
   try {
     const funcionario = await mongo.mongo
       .db("aeroporto")
-      .collection("funcionario")
+      .collection("empregado")
       .findOne({ _id: body.nro_matricula });
     if (!funcionario) {
       throw new Error("Funcionário não existe");

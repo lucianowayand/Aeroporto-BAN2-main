@@ -57,6 +57,28 @@ const Create = async (body) => {
 
 const Update = async (body, id) => {
   try {
+    const funcionario = await mongo.mongo
+      .db("aeroporto")
+      .collection("empregado")
+      .findOne({ _id: body.nro_tecnico });
+      console.log(funcionario)
+    if (!funcionario) {
+      throw new Error("Funcionário não existe");
+    }
+    const aviao = await mongo.mongo
+      .db("aeroporto")
+      .collection("aviao")
+      .findOne({ _id: body.num_reg });
+    if (!aviao) {
+      throw new Error("Avião não existe");
+    }
+    const teste = await mongo.mongo
+      .db("aeroporto")
+      .collection("teste")
+      .findOne({ _id: body.nro_anac });
+    if (!teste) {
+      throw new Error("Teste não existe");
+    }
     const resultado = await mongo.mongo
       .db("aeroporto")
       .collection("testa")
